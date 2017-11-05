@@ -23,7 +23,7 @@ matrix:
           compiler: clang
 
 install:
-    - pip install conan
+    - sudo pip install conan
     - conan user
 
 before_script:
