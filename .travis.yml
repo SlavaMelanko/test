@@ -26,9 +26,6 @@ matrix:
         - os:  osx
           env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
-install:
-    - source ci/travis/install-$TRAVIS_OS_NAME.sh
-
 script:
     - mkdir build
     - cd build
