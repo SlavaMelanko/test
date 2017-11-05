@@ -26,5 +26,5 @@ matrix:
 
 script:
     - cd scripts
-    - chmod +x cmakegen-clang-$TARGET_CPU-$BUILD_CONFIGURATION.sh
-    - ./build-clang-$TARGET_CPU-$BUILD_CONFIGURATION.sh
+    - chmod +x build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
+    - ./build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
