@@ -34,5 +34,5 @@ before_script:
 
 script:
     - cd scripts
-    - chmod +x build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
-    - ./build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
+    - chmod +x build-$CC-$TARGET_CPU-$BUILD_CONFIGURATION
+    - ./build-$CC-$TARGET_CPU-$BUILD_CONFIGURATION
