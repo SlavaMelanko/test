@@ -29,12 +29,8 @@ install:
     - conan user
 
 before_script:
-    - which clang++
     - clang++ --version 2>&1 | grep clang
-    - which g++
     - g++ --version
-    - $CXX --version
-    - echo $CC
 
 script:
     - cd scripts
