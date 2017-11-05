@@ -19,9 +19,8 @@ configuration:
 environment:
     matrix:
         - TOOLCHAIN: msvc14
-        - TOOLCHAIN: msvc15
 
 build_script:
     - cd scripts
-    - chmod +x build-$CC-$TARGET_CPU-$BUILD_CONFIGURATION
-    - ./build-$CC-$TARGET_CPU-$BUILD_CONFIGURATION
+    - chmod +x build-msvc14-$TARGET_CPU-$BUILD_CONFIGURATION
+    - ./build-msvc14-$TARGET_CPU-$BUILD_CONFIGURATION
