@@ -29,9 +29,10 @@ cmake ^
     ../..
 
 echo [MSVC] Building the project...
+call "%VS140COMNTOOLS%\vsvars32.bat"
 devenv.com smela-project.sln /rebuild %BUILD_CONFIGURATION% /out build.log
 
-echo Project has been generated successfully!
+echo Project has been built successfully!
 popd
 goto :eof
 

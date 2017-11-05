@@ -16,22 +16,23 @@ pushd %BUILD_DIR%
 
 echo [Conan] Downloading packages...
 conan install ^
-    --build missing ^
-    -s build_type=%BUILD_CONFIGURATION% ^
-    -s compiler="Visual Studio" ^
-    -s compiler.version=%VS_VERSION% ^
-    ../..
+	--build missing ^
+	-s build_type=%BUILD_CONFIGURATION% ^
+	-s compiler="Visual Studio" ^
+	-s compiler.version=%VS_VERSION% ^
+	../..
 
 echo [CMake] Generating the project...
 cmake ^
-    -G "Visual Studio %VS_VERSION% %VS_YEAR% %VS_ARCH%" ^
-    "-DCMAKE_BUILD_TYPE:STRING=%BUILD_CONFIGURATION%" ^
-    ../..
+	-G "Visual Studio %VS_VERSION% %VS_YEAR% %VS_ARCH%" ^
+	"-DCMAKE_BUILD_TYPE:STRING=%BUILD_CONFIGURATION%" ^
+	../..
 
 echo [MSVC] Building the project...
+call "%VS140COMNTOOLS%\vsvars32.bat"
 devenv.com smela-project.sln /rebuild %BUILD_CONFIGURATION% /out build.log
 
-echo Project has been generated successfully!
+echo Project has been built successfully!
 popd
 goto :eof
 
