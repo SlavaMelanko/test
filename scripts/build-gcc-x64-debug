@@ -1,0 +1,59 @@
+#!/bin/sh
+
+SCRIPT_PATH=$(readlink -f "$0")
+BASE_DIR=$(dirname "$(dirname "$SCRIPT_PATH)")")
+
+# Create build directory.
+if [ ! -d "$BUILD_DIR/build/gcc-x64-debug" ]; then
+    mkdir -p $BASE_DIR/build/gcc-x64-debug
+    if [ $? -eq 1 ]
+    then
+        echo "[!] ERROR: Failed to create build directory"
+        exit 1
+    fi
+fi
+
+cd $BASE_DIR/build/gcc-x64-debug
+
+# Run Conan.
+echo "[*] Running Conan."
+conan \
+    install \
+    ../.. \
+    -s arch=x86_64 \
+    -s build_type=Debug \
+    -s compiler=gcc \
+    -s compiler.libcxx=libstdc++11 \
+    --build missing
+if [ $? -eq 1 ]
+then
+    echo "[!] ERROR: Failed to generate project files - see above and correct."
+    popd
+    exit 2
+fi
+
+# Run CMake.
+echo "[*] Generating project files."
+cmake \
+    -G"Unix Makefiles" \
+    "-DCMAKE_BUILD_TYPE=Debug" \
+    "-Wno-dev" \
+    ../..
+if [ $? -eq 1 ]
+then
+    echo "[!] ERROR: Failed to generate project files - see above and correct."
+    popd
+    exit 2
+fi
+
+CPU_COUNT=`nproc --all`
+
+# Run build
+echo "[*] Building Release configuration on $CPU_COUNT cores."
+make -j $CPU_COUNT &> build.log
+if [ $? -eq 1 ]
+then
+    echo "[!] ERROR: Failed to build project - see above and correct."
+    popd
+    exit 3
+fi
