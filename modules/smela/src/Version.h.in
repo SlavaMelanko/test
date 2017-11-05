@@ -1,0 +1,10 @@
+#pragma once
+
+#define VERSION_MAJOR @VERSION_MAJOR@
+#define VERSION_MINOR @VERSION_MINOR@
+#define VERSION_PATCH @VERSION_PATCH@
+
+#define str(s) #s
+#define xstr(s) str(s)
+
+#define APP_VERSION xstr(VERSION_MAJOR) "." xstr(VERSION_MINOR) "." xstr(VERSION_PATCH)
