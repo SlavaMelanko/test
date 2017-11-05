@@ -24,6 +24,10 @@ matrix:
         - os: osx
           env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
+install:
+    - pip install conan
+    - conan user
+
 script:
     - cd scripts
     - chmod +x build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
