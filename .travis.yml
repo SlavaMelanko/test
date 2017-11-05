@@ -32,8 +32,9 @@ before_script:
     - which g++
     - g++ --version
     - $CXX --version
+    - echo $COMPILER
 
 script:
     - cd scripts
-    - chmod +x build-$COMPILER-$TARGET_CPU-$BUILD_CONFIGURATION
-    - ./build-$COMPILER-$TARGET_CPU-$BUILD_CONFIGURATION
+    - chmod +x build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
+    - ./build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
