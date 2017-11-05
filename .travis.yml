@@ -5,13 +5,17 @@ language: cpp
 
 os:
     - osx
+    - linux
 
 compiler:
     - clang
+    - gcc
 
 env:
-    - TARGET_CPU=x64 BUILD_CONFIGURATION=debug
-    - TARGET_CPU=x64 BUILD_CONFIGURATION=release
+    - COMPILER=clang TARGET_CPU=x64 BUILD_CONFIGURATION=debug
+    - COMPILER=clang TARGET_CPU=x64 BUILD_CONFIGURATION=release
+    - COMPILER=gcc TARGET_CPU=x64 BUILD_CONFIGURATION=debug
+    - COMPILER=gcc TARGET_CPU=x64 BUILD_CONFIGURATION=release
 
 matrix:
     exclude:
@@ -24,5 +28,5 @@ install:
 
 script:
     - cd scripts
-    - chmod +x build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
-    - ./build-clang-$TARGET_CPU-$BUILD_CONFIGURATION
+    - chmod +x build-$COMPILER-$TARGET_CPU-$BUILD_CONFIGURATION
+    - ./build-$COMPILER-$TARGET_CPU-$BUILD_CONFIGURATION
