@@ -22,5 +22,4 @@ environment:
 
 build_script:
     - cd scripts
-    - chmod +x build-msvc14-%PLATFORM%-%CONFIGURATION%
-    - ./build-msvc14-%PLATFORM%-%CONFIGURATION%
+    - build-msvc14-%PLATFORM%-%CONFIGURATION%
