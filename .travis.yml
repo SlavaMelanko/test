@@ -12,10 +12,8 @@ compiler:
     - gcc
 
 env:
-    - COMPILER=clang TARGET_CPU=x64 BUILD_CONFIGURATION=debug
-    - COMPILER=clang TARGET_CPU=x64 BUILD_CONFIGURATION=release
-    - COMPILER=gcc TARGET_CPU=x64 BUILD_CONFIGURATION=debug
-    - COMPILER=gcc TARGET_CPU=x64 BUILD_CONFIGURATION=release
+    - TARGET_CPU=x64 BUILD_CONFIGURATION=debug
+    - TARGET_CPU=x64 BUILD_CONFIGURATION=release
 
 matrix:
     exclude:
@@ -25,6 +23,15 @@ matrix:
 install:
     - pip install conan
     - conan user
+
+before_script:
+    - uname -a
+    - printenv
+    - which clang++
+    - clang++ --version 2>&1 | grep clang
+    - which g++
+    - g++ --version
+    - $CXX --version
 
 script:
     - cd scripts
