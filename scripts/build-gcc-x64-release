@@ -1,58 +1,55 @@
 #!/bin/sh
 
-SCRIPT_PATH=$(readlink -f "$0")
-BASE_DIR=$(dirname "$(dirname "$SCRIPT_PATH)")")
+# Configure build variables.
+BUILD_MODE=Release
+BUILD_ARCH=x64
+BUILD_DIR=../build/gcc-${BUILD_ARCH}-${BUILD_MODE}
 
-# Create build directory.
-if [ ! -d "$BUILD_DIR/build/gcc-x64-release" ]; then
-    mkdir -p $BASE_DIR/build/gcc-x64-release
-    if [ $? -eq 1 ]
-    then
-        echo "[!] ERROR: Failed to create build directory"
+# Color configuration.
+COLOR_OFF='\033[0m'
+COLOR_RED='\033[0;31m'
+COLOR_GREEN='\033[0;32m'
+COLOR_BLUE='\033[0;34m'
+
+PrintInfoMsg() {
+    printf "${COLOR_GREEN} >> $1 ${COLOR_OFF}\n"
+}
+
+PrintErrorMsg() {
+    printf "${COLOR_RED} >> $1 ${COLOR_OFF}\n"
+}
+
+CheckError() {
+    if [ $? -eq 1 ]; then
+        PrintErrorMsg "$1"
         exit 1
     fi
-fi
+}
 
-cd $BASE_DIR/build/gcc-x64-release
+PrintInfoMsg "Creating a build directory..."
+mkdir -p ${BUILD_DIR}
+CheckError "Failed to make the build directory."
 
-# Run Conan.
-echo "[*] Running Conan."
-conan \
-    install \
-    ../.. \
-    -s build_type=Release \
-    -s compiler=gcc \
-    -s compiler.libcxx=libstdc++11 \
-    --build missing
-if [ $? -eq 1 ]
-then
-    echo "[!] ERROR: Failed to generate project files - see above and correct."
-    popd
-    exit 2
-fi
+cd ${BUILD_DIR}
 
-# Run CMake.
-echo "[*] Generating project files."
+PrintInfoMsg "[Conan] Downloading packages..."
+conan install \
+    --build missing \
+    -s build_type=${BUILD_MODE} \
+    ../..
+CheckError "[Conan] Failed to download and install required packages."
+
+PrintInfoMsg "[CMake] Generating the project..."
 cmake \
-    -G"Unix Makefiles" \
-    "-DCMAKE_BUILD_TYPE=Release" \
+    -G "Unix Makefiles" \
+    "-DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE}" \
     "-Wno-dev" \
     ../..
-if [ $? -eq 1 ]
-then
-    echo "[!] ERROR: Failed to generate project files - see above and correct."
-    popd
-    exit 2
-fi
+CheckError "[CMake] Failed to generate the project."
 
 CPU_COUNT=`nproc --all`
 
-# Run build
-echo "[*] Building Release configuration on $CPU_COUNT cores."
+PrintInfoMsg "[Make] Building the project..."
 make -j $CPU_COUNT &> build.log
-if [ $? -eq 1 ]
-then
-    echo "[!] ERROR: Failed to build project - see above and correct."
-    popd
-    exit 3
-fi
+
+PrintInfoMsg "Project has been built successfully!"
