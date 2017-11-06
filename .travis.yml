@@ -1,6 +1,10 @@
 dist: trusty
 sudo: required
 
+cache:
+    directories:
+        - ${TRAVIS_BUILD_DIR}/deps
+
 language: cpp
 
 os:
@@ -27,6 +31,12 @@ install:
     - sudo pip install conan
     # Automatic detection of your arch, compiler, etc.
     - conan user
+
+    # Dependencies required by the CI are installed in ${TRAVIS_BUILD_DIR}/deps/
+    - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+    - mkdir -p "${DEPS_DIR}"
+    - cd "${DEPS_DIR}"
+
     # Install a recent CMake (unless already installed on OS X)
     - CMAKE_VERSION=3.7.2
     - |
@@ -45,6 +55,6 @@ before_script:
     - g++ --version
 
 script:
-    - cd scripts
+    - cd "${TRAVIS_BUILD_DIR}/scripts"
     - chmod +x build-$CC-$TARGET_CPU-$BUILD_CONFIGURATION
     - ./build-$CC-$TARGET_CPU-$BUILD_CONFIGURATION
