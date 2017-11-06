@@ -29,6 +29,8 @@ install:
     - conan user
 
 before_script:
+    - conan --version
+    - cmake --version
     - clang++ --version 2>&1 | grep clang
     - g++ --version
 

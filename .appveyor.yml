@@ -1,23 +1,25 @@
+version: 1.0.{build}
+
 image: Visual Studio 2017
 
 init:
     - git config --global core.autocrlf input
 
 clone_folder: c:\projects\smela
+
 shallow_clone: true
 
 matrix:
     fast_finish: false
-
-platform:
-    - x64
 
 install:
     - cmd: echo "Downloading conan..."
     - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
     - cmd: pip.exe install conan
     - cmd: conan user # Create the conan data directory
-    - cmd: conan --version
+
+platform:
+    - x64
 
 configuration:
     - Debug
@@ -26,6 +28,10 @@ configuration:
 environment:
     matrix:
         - TOOLCHAIN: msvc14
+
+before_build:
+    - cmd: conan --version
+    - cmd: cmake --version
 
 build_script:
     - cd scripts
