@@ -46,11 +46,7 @@ before_build:
         echo vs_version="$env:vs_version"
 
         echo [Conan] Downloading packages...
-        conan install ^
-            --build missing ^
-            -s build_type=%$env:CONFIGURATION ^
-            -s compiler="Visual Studio" ^
-            -s compiler.version=$env:vs_version ^
+        conan install --build missing -s build_type=%$env:CONFIGURATION -s compiler="Visual Studio" -s compiler.version=$env:vs_version
 
         echo Creating a build directory...
         mkdir build
