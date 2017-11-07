@@ -46,7 +46,7 @@ before_build:
         echo vs_version="$env:vs_version"
 
         Write-Output "Creating a build directory..."
-        mkdir build && cd build
+        (mkdir build) -and (cd build)
 
         Write-Output "[Conan] Downloading packages..."
         conan install .. `
