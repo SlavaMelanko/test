@@ -1,6 +1,7 @@
 version: 1.0.{build}
 
 image:
+    - Visual Studio 2015
     - Visual Studio 2017
 
 init:
@@ -27,10 +28,6 @@ configuration:
     - Debug
     - Release
 
-environment:
-    matrix:
-        - TOOLCHAIN: msvc14
-
 before_build:
     - cmd: conan --version
     - cmd: cmake --version
@@ -48,6 +45,19 @@ before_build:
         echo generator="$env:generator"
         echo vs_version="$env:vs_version"
 
+        echo [Conan] Downloading packages...
+        conan install ^
+            --build missing ^
+            -s build_type=%$env:CONFIGURATION ^
+            -s compiler="Visual Studio" ^
+            -s compiler.version=$env:vs_version ^
+
+        echo Creating a build directory...
+        mkdir build
+        cd build
+
+        echo [CMake] Generating the project...
+        cmake .. -G "$env:generator"
+
 build_script:
-    - cd scripts
-    - build-msvc14-%PLATFORM%-%CONFIGURATION%
+    - cmake --build . --config %CONFIGURATION% -- /m /v:minimal
