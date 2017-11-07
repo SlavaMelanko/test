@@ -32,6 +32,7 @@ before_build:
     - cmd: conan --version
     - cmd: cmake --version
     - ps: |
+        Write-Output "$env:APPVEYOR_JOB_NAME"
         if ("$env:APPVEYOR_JOB_NAME" -match "Image: Visual Studio 2015") {
             $env:generator="Visual Studio 14 2015"
             $env:vs_version="14"
@@ -42,8 +43,8 @@ before_build:
         if ($env:PLATFORM -eq "x64") {
             $env:generator="$env:generator Win64"
         }
-        echo generator="$env:generator"
-        echo vs_version="$env:vs_version"
+        Write-Output generator="$env:generator"
+        Write-Output vs_version="$env:vs_version"
 
         Write-Output "Creating a build directory..."
         (mkdir build) -and (cd build)
