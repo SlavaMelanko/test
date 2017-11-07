@@ -45,16 +45,15 @@ before_build:
         echo generator="$env:generator"
         echo vs_version="$env:vs_version"
 
+        Write-Output "Creating a build directory..."
+        mkdir build && cd build
+
         Write-Output "[Conan] Downloading packages..."
-        conan install `
+        conan install .. `
             --build missing `
             -s build_type=$env:CONFIGURATION `
             -s compiler="Visual Studio" `
             -s compiler.version=$env:vs_version
-
-        Write-Output "Creating a build directory..."
-        mkdir build
-        cd build
 
         Write-Output "[CMake] Generating the project..."
         cmake .. -G "$env:generator"
