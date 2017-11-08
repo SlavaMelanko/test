@@ -1,61 +1,64 @@
 version: 1.0.{build}
 
 image:
-    - Visual Studio 2015
-    - Visual Studio 2017
+  - Visual Studio 2015
+  - Visual Studio 2017
 
+# Scripts that are called at very beginning, before repo cloning.
 init:
-    - git config --global core.autocrlf input
+  - git config --global core.autocrlf input
 
 clone_folder: c:\projects\smela
 
+# Fetch repository as zip archive.
 shallow_clone: true
 
 matrix:
-    fast_finish: false
+  # Set this flag to immediately finish build once one of the jobs fails.
+  fast_finish: false
 
 install:
-    - cmd: echo "Downloading conan..."
-    - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
-    - cmd: pip.exe install conan
-    # Create the conan data directory.
-    - cmd: conan user
+  # Downloading conan.
+  - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
+  - cmd: pip.exe install conan
+  # Create conan data directory.
+  - cmd: conan user
 
 platform:
-    - x64
+  - x64
 
 configuration:
-    - Debug
-    - Release
+  - Debug
+  - Release
 
 before_build:
-    - cmd: conan --version
-    - cmd: cmake --version
-    - ps: |
-        if ("$env:APPVEYOR_BUILD_WORKER_IMAGE" -eq "Visual Studio 2015") {
-            $env:vs_version=14
-            $env:generator="Visual Studio $env:vs_version 2015"
-        } else {
-            $env:vs_version=15
-            $env:generator="Visual Studio $env:vs_version 2017"
-        }
-        if ($env:PLATFORM -eq "x64") {
-            $env:generator="$env:generator Win64"
-        }
-        Write-Output generator="$env:generator"
+  - cmd: conan --version
+  - cmd: cmake --version
+  - ps: |
+    if ("$env:APPVEYOR_BUILD_WORKER_IMAGE" -eq "Visual Studio 2015") {
+      $env:vs_version=14
+      $env:generator="Visual Studio $env:vs_version 2015"
+    } else {
+      $env:vs_version=15
+      $env:generator="Visual Studio $env:vs_version 2017"
+    }
+    if ($env:PLATFORM -eq "x64") {
+      $env:generator="$env:generator Win64"
+    }
+    Write-Output generator="$env:generator"
 
-        Write-Output "Creating a build directory..."
-        (mkdir build) -and (cd build)
+    Write-Output "Creating a build directory..."
+    (mkdir build) -and (cd build)
 
-        Write-Output "[Conan] Downloading packages..."
-        conan install .. `
-            --build missing `
-            -s build_type=$env:CONFIGURATION `
-            -s compiler="Visual Studio" `
-            -s compiler.version=$env:vs_version
+    Write-Output "[Conan] Downloading packages..."
+    conan install .. `
+      --build missing `
+      -s build_type=$env:CONFIGURATION `
+      -s compiler="Visual Studio" `
+      -s compiler.version=$env:vs_version
 
-        Write-Output "[CMake] Generating the project..."
-        cmake .. -G "$env:generator"
+    Write-Output "[CMake] Generating the project..."
+    cmake .. -G "$env:generator"
 
 build_script:
-    - cmake --build . --config %CONFIGURATION% -- /m /v:minimal
+  - cmake --build . --config %CONFIGURATION% -- /m /v:minimal
