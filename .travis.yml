@@ -61,7 +61,7 @@ matrix:
 
 install:
   # Install conan.
-  - sudo pip install --user conan
+  #- sudo pip install --user conan
   # Automatic detection of your arch, compiler, etc.
   #- conan user
 
@@ -81,8 +81,13 @@ install:
       CMAKE_URL="https://cmake.org/files/v${CMAKE_VERSION%.[0-9]}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
       mkdir cmake && travis_retry wget --no-check-certificate -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+      sudo pip install conan
+      conan user
     else
       brew install cmake || brew upgrade cmake
+      brew update
+      brew install conan
+      conan user
     fi
 
 before_script:
