@@ -2,7 +2,7 @@ language: cpp
 
 dist: trusty
 sudo: required
-group: edge
+#group: edge
 
 cache:
   directories:
