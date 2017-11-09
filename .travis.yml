@@ -63,7 +63,7 @@ install:
   # Install conan.
   - sudo pip install --user conan
   # Automatic detection of your arch, compiler, etc.
-  - conan user
+  #- conan user
 
   # Set the ${CXX} variable properly.
   - export CXX=${COMPILER}
