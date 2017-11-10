@@ -4,13 +4,6 @@ dist: trusty
 sudo: required
 group: edge
 
-cache:
-  directories:
-    - ${TRAVIS_BUILD_DIR}/deps
-
-# Use Linux unless specified otherwise.
-os: linux
-
 matrix:
   include:
     #
@@ -28,31 +21,6 @@ matrix:
       osx_image: xcode8.3
       compiler: clang
 
-    # XCode 9.1
-    - env: COMPILER=clang++ BUILD_TYPE=Debug CONAN_COMPILER=clang CONAN_COMPILER_VERSION=9.0
-      os: osx
-      osx_image: xcode9.1
-      compiler: clang
-
-    - env: COMPILER=clang++ BUILD_TYPE=Release CONAN_COMPILER=clang CONAN_COMPILER_VERSION=9.0
-      os: osx
-      osx_image: xcode9.1
-      compiler: clang
-
-    #
-    # GCC on Linux.
-    #
-
-    - env: COMPILER=g++-5 BUILD_TYPE=Debug CONAN_COMPILER=gcc CONAN_COMPILER_VERSION=5.4
-      addons: &gcc5
-        apt:
-          packages: g++-5
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - env: COMPILER=g++-5 BUILD_TYPE=Release CONAN_COMPILER=gcc CONAN_COMPILER_VERSION=5.4
-      addons: *gcc5
-
   exclude:
     - os: osx
       compiler: gcc
@@ -60,15 +28,6 @@ matrix:
       compiler: clang
 
 install:
-  # Install conan.
-  #- sudo pip install --user conan
-  # Automatic detection of your arch, compiler, etc.
-  #- conan user
-
-  # Set the ${CXX} variable properly.
-  - export CXX=${COMPILER}
-  - ${CXX} --version
-
   # Dependencies required by the CI are installed in ${TRAVIS_BUILD_DIR}/deps/.
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}"
@@ -85,8 +44,7 @@ install:
       conan user
     else
       brew install cmake || brew upgrade cmake
-      brew update
-      brew install conan
+      brew install conan || brew upgrade conan
       conan user
     fi
 
@@ -98,9 +56,9 @@ before_script:
   - |
     conan install .. \
       --build missing \
-      -s build_type=${BUILD_TYPE} \
-      -s compiler=${CONAN_COMPILER} \
-      -s compiler.version=${CONAN_COMPILER_VERSION}
+      -s build_type=${BUILD_TYPE}
+#      -s compiler=${CONAN_COMPILER} \
+#      -s compiler.version=${CONAN_COMPILER_VERSION}
 
   - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
