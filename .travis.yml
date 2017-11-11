@@ -8,10 +8,54 @@ matrix:
   include:
 
     #
-    # Clang on OSX.
+    # Clang on macOS.
     #
 
-    # XCode 8.3
+    # Xcode 7.3.
+    - env: COMPILER=clang++ BUILD_TYPE=Debug
+      os: osx
+      osx_image: xcode7.3
+      compiler: clang
+
+    - env: COMPILER=clang++ BUILD_TYPE=Release
+      os: osx
+      osx_image: xcode7.3
+      compiler: clang
+
+    # Xcode 8.0.
+    - env: COMPILER=clang++ BUILD_TYPE=Debug
+      os: osx
+      osx_image: xcode8.0
+      compiler: clang
+
+    - env: COMPILER=clang++ BUILD_TYPE=Release
+      os: osx
+      osx_image: xcode8.0
+      compiler: clang
+
+    # Xcode 8.1.
+    - env: COMPILER=clang++ BUILD_TYPE=Debug
+      os: osx
+      osx_image: xcode8.1
+      compiler: clang
+
+    - env: COMPILER=clang++ BUILD_TYPE=Release
+      os: osx
+      osx_image: xcode8.1
+      compiler: clang
+
+    # Xcode 8.2.
+    - env: COMPILER=clang++ BUILD_TYPE=Debug
+      os: osx
+      osx_image: xcode8.2
+      compiler: clang
+
+    - env: COMPILER=clang++ BUILD_TYPE=Release
+      os: osx
+      osx_image: xcode8.2
+      compiler: clang
+
+    # Xcode 8.3.
     - env: COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode8.3
@@ -20,6 +64,28 @@ matrix:
     - env: COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode8.3
+      compiler: clang
+
+    # Xcode 9.0.
+    - env: COMPILER=clang++ BUILD_TYPE=Debug
+      os: osx
+      osx_image: xcode9.0
+      compiler: clang
+
+    - env: COMPILER=clang++ BUILD_TYPE=Release
+      os: osx
+      osx_image: xcode9.0
+      compiler: clang
+
+    # Xcode 9.1.
+    - env: COMPILER=clang++ BUILD_TYPE=Debug
+      os: osx
+      osx_image: xcode9.1
+      compiler: clang
+
+    - env: COMPILER=clang++ BUILD_TYPE=Release
+      os: osx
+      osx_image: xcode9.1
       compiler: clang
 
   exclude:
@@ -38,7 +104,7 @@ install:
   - mkdir -p "${DEPS_DIR}"
   - cd "${DEPS_DIR}"
 
-  # Install a recent CMake (unless already installed on OS X) and Conan.
+  # Install a recent CMake (unless already installed on macOS) and Conan.
   - CMAKE_VERSION=3.7.2
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
@@ -47,6 +113,7 @@ install:
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       sudo pip install conan
     else
+      brew update
       brew install cmake || brew upgrade cmake
       brew install conan || brew upgrade conan
     fi
