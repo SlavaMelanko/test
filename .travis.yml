@@ -22,12 +22,6 @@ matrix:
       osx_image: xcode8.3
       compiler: clang
 
-  exclude:
-    - os: osx
-      compiler: gcc
-    - os: linux
-      compiler: clang
-
 install:
   # Set the ${CXX} variable properly.
   - export CXX=${COMPILER}
@@ -60,4 +54,4 @@ before_script:
   - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
 script:
-  - cmake --build . -- -j2
+  - cmake --build . -- config ${BUILD_TYPE}
