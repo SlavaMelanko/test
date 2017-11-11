@@ -60,4 +60,4 @@ before_script:
   - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
 script:
-  - cmake --build . -- config ${BUILD_TYPE}
+  - cmake --build . --config ${BUILD_TYPE}
