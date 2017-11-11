@@ -22,6 +22,12 @@ matrix:
       osx_image: xcode8.3
       compiler: clang
 
+  exclude:
+    - os: osx
+      compiler: gcc
+    - os: linux
+      compiler: clang
+
 install:
   # Set the ${CXX} variable properly.
   - export CXX=${COMPILER}
