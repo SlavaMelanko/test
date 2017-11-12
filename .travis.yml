@@ -11,40 +11,46 @@ matrix:
     # Clang on macOS.
     #
 
-    # ...
+
 
     #
     # GCC on Linux.
     #
 
     # GCC 5.
-    - env: COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Debug
+    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Debug
+      os: linux
       addons: &gcc5
         apt:
           packages: g++-5
           sources: ubuntu-toolchain-r-test
 
-    - env: COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Release
+    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Release
+      os: linux
       addons: *gcc5
 
     # GCC 6.
-    - env: COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Debug
+    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Debug
+      os: linux
       addons: &gcc6
         apt:
           packages: g++-6
           sources: ubuntu-toolchain-r-test
 
-    - env: COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Release
+    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Release
+      os: linux
       addons: *gcc6
 
     # GCC 7.
-    - env: COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Debug
+    - env: CXX_COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Debug
+      os: linux
       addons: &gcc7
         apt:
           packages: g++-7
           sources: ubuntu-toolchain-r-test
 
-    - env: COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Release
+    - env: CXX_COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Release
+      os: linux
       addons: *gcc7
 
   exclude:
@@ -55,7 +61,7 @@ matrix:
 
 install:
   # Set the ${CXX} variable properly.
-  - export CXX=${COMPILER}
+  - export CXX=${CXX_COMPILER}
   - ${CXX} --version
   # Set the ${CC} variable properly.
   - |
