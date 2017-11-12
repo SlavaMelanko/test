@@ -12,78 +12,78 @@ matrix:
     #
 
     # Xcode 7.3.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode7.3
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode7.3
       compiler: clang
 
     # Xcode 8.0.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode8.0
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode8.0
       compiler: clang
 
     # Xcode 8.1.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode8.1
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode8.1
       compiler: clang
 
     # Xcode 8.2.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode8.2
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode8.2
       compiler: clang
 
     # Xcode 8.3.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode8.3
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode8.3
       compiler: clang
 
     # Xcode 9.0.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode9.0
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode9.0
       compiler: clang
 
     # Xcode 9.1.
-    - env: COMPILER=clang++ BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
       os: osx
       osx_image: xcode9.1
       compiler: clang
 
-    - env: COMPILER=clang++ BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
       os: osx
       osx_image: xcode9.1
       compiler: clang
