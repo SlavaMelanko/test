@@ -17,15 +17,35 @@ matrix:
     # GCC on Linux.
     #
 
-    - os: linux
-      addons:
+    # GCC 5.
+    - env: COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Debug
+      addons: &gcc5
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-5
-      env:
-         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+          packages: g++-5
+          sources: ubuntu-toolchain-r-test
+
+    - env: COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Release
+      addons: *gcc5
+
+    # GCC 6.
+    - env: COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Debug
+      addons: &gcc6
+        apt:
+          packages: g++-6
+          sources: ubuntu-toolchain-r-test
+
+    - env: COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Release
+      addons: *gcc6
+
+    # GCC 7.
+    - env: COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Debug
+      addons: &gcc7
+        apt:
+          packages: g++-7
+          sources: ubuntu-toolchain-r-test
+
+    - env: COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Release
+      addons: *gcc7
 
   exclude:
     - os: osx
@@ -33,10 +53,17 @@ matrix:
     - os: linux
       compiler: clang
 
-before_install:
-  - eval "${MATRIX_EVAL}"
-
 install:
+  # Set the ${CXX} variable properly.
+  - export CXX=${COMPILER}
+  - ${CXX} --version
+  # Set the ${CC} variable properly.
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      export CC=${CC_COMPILER}
+      ${CC} --version
+    fi
+
   # Dependencies required by the CI are installed in ${TRAVIS_BUILD_DIR}/deps/.
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}"
