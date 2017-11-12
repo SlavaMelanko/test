@@ -159,6 +159,7 @@ install:
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       sudo pip install conan
     else
+      brew update
       brew install cmake || brew upgrade cmake
       brew install conan || brew upgrade conan
     fi
