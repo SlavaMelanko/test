@@ -1,6 +1,6 @@
-project(smela-project)
-
 cmake_minimum_required(VERSION 3.0.0)
+
+project(smela-project)
 
 set(VERSION_MAJOR 1)
 set(VERSION_MINOR 0)
@@ -8,13 +8,15 @@ set(VERSION_PATCH 0)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+include(ExternalProject)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(cotire)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-if (MSVC14)
+if (MSVC14 OR MSVC15)
 	add_definitions(-D_SCL_SECURE_NO_WARNINGS)
 	add_compile_options(/EHsc /W4 /WX)
 
@@ -36,7 +38,15 @@ else ()
 		-fno-strict-aliasing -Wall -Wcast-align -Wconversion -Wctor-dtor-privacy -Werror \
 		-Wextra -Wno-missing-braces -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual \
 		-Wpedantic -Wshadow -Wsign-conversion")
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+#	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+	
+	if(ENABLE_COVERAGE)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+	endif()
 endif ()
 
 add_subdirectory(modules/smela)
+
+enable_testing()
+add_subdirectory(tests)

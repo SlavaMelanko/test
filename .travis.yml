@@ -12,70 +12,70 @@ matrix:
     #
 
     # Xcode 7.3.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode7.3
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode7.3
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode7.3
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode7.3
+#1      compiler: clang
 
     # Xcode 8.0.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode8.0
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode8.0
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8.0
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode8.0
+#1      compiler: clang
 
     # Xcode 8.1.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode8.1
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode8.1
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8.1
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode8.1
+#1      compiler: clang
 
     # Xcode 8.2.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode8.2
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode8.2
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8.2
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode8.2
+#1      compiler: clang
 
     # Xcode 8.3.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode8.3
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode8.3
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8.3
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode8.3
+#1      compiler: clang
 
     # Xcode 9.0.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode9.0
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode9.0
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode9.0
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode9.0
+#1      compiler: clang
 
     # Xcode 9.1.
     - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
@@ -93,28 +93,28 @@ matrix:
     #
 
     # GCC 5.
-    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Debug
-      os: linux
-      addons: &gcc5
-        apt:
-          packages: g++-5
-          sources: ubuntu-toolchain-r-test
+#1    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Debug
+#1      os: linux
+#1      addons: &gcc5
+#1        apt:
+#1          packages: g++-5
+#1          sources: ubuntu-toolchain-r-test
 
-    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Release
-      os: linux
-      addons: *gcc5
+#1    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Release
+#1      os: linux
+#1      addons: *gcc5
 
     # GCC 6.
-    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Debug
-      os: linux
-      addons: &gcc6
-        apt:
-          packages: g++-6
-          sources: ubuntu-toolchain-r-test
+#1    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Debug
+#1      os: linux
+#1      addons: &gcc6
+#1        apt:
+#1          packages: g++-6
+#1          sources: ubuntu-toolchain-r-test
 
-    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Release
-      os: linux
-      addons: *gcc6
+#1    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Release
+#1      os: linux
+#1      addons: *gcc6
 
     # GCC 7.
     - env: CXX_COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Debug
@@ -170,7 +170,9 @@ before_script:
   - cd "${TRAVIS_BUILD_DIR}"
   - mkdir -p build && cd build
   - conan install .. --build missing -s build_type=${BUILD_TYPE}
-  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+  - cmake .. -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} -DENABLE_COVERAGE:BOOL=TRUE
 
 script:
   - cmake --build . --config ${BUILD_TYPE}
+  - ctest
+  - bash <(curl -s https://codecov.io/bash)
