@@ -35,15 +35,16 @@ else ()
 			"Please use a different C++ compiler.")
 	endif ()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-		-fno-strict-aliasing -Wall -Wcast-align -Wconversion -Wctor-dtor-privacy -Werror \
-		-Wextra -Wno-missing-braces -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual \
-		-Wpedantic -Wshadow -Wsign-conversion")
+		-fno-strict-aliasing -Wall -Wcast-align -Wconversion -Wctor-dtor-privacy \
+		-Werror -Wunused-command-line-argument -Wextra -Wno-missing-braces \
+		-Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -Wpedantic \
+		-Wshadow -Wsign-conversion")
 #	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 	
-	if(ENABLE_COVERAGE)
+	if (ENABLE_COVERAGE)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
-	endif()
+	endif ()
 endif ()
 
 add_subdirectory(modules/smela)

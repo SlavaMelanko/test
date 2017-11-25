@@ -19,8 +19,8 @@ public:
 	void setPassword(std::string password);
 
 private:
-	std::string _username = { "user" };
-	std::string _password = { "user" };
+	std::string _username = "user";
+	std::string _password = "user";
 };
 
 inline std::string User::getUsername() const
