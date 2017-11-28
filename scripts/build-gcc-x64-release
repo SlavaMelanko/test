@@ -53,3 +53,7 @@ PrintInfoMsg "[Make] Building the project..."
 make -j $CPU_COUNT &> build.log
 
 PrintInfoMsg "Project has been built successfully!"
+
+PrintInfoMsg "[CPack] Running tests..."
+ctest --extra-verbose --parallel $CPU_COUNT --output-log ctest-log.dat
+CheckError "[CPack] Tests have been failed!"

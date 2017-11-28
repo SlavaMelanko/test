@@ -54,4 +54,6 @@ xcodebuild \
 
 PrintInfoMsg "Project has been built successfully!"
 
-ctest
+PrintInfoMsg "[CPack] Running tests..."
+ctest --extra-verbose --parallel 2 --output-log ctest-log.dat
+CheckError "[CPack] Tests have been failed!"

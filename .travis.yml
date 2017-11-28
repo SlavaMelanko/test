@@ -174,5 +174,5 @@ before_script:
 
 script:
   - cmake --build . --config ${BUILD_TYPE}
-  - ctest
+  - ctest --extra-verbose --parallel 2
   - bash <(curl -s https://codecov.io/bash)

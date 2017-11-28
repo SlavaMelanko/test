@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.0.0)
 
 project(smela-tests CXX)
@@ -8,7 +9,7 @@ list(APPEND CATCH_CMAKE_ARGS
 )
 
 # Add catch library as an external project.
-ExternalProject_Add(
+externalproject_add(
 	catch
 	# Root dir for entire project.
 	PREFIX ${CMAKE_BINARY_DIR}/catch
@@ -47,7 +48,7 @@ function(do_test name)
 	)
 	add_test(${name} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${name})
 	# Group all tests under smela-tests.
-	set_property(TARGET ${name} PROPERTY FOLDER "smela-tests")
+	set_property(TARGET ${name} PROPERTY FOLDER "tests")
 endfunction()
 
 do_test(UserTests)
