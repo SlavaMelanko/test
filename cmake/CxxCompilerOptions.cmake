@@ -14,9 +14,9 @@ if (MSVC14 OR MSVC15)
 		# Catch C++ exceptions only and tells the compiler to assume that
 		# functions declared as extern "C" never throw a C++ exception.
 		/EHsc
-		# Display all warnings displayed by /W4 and all other warnings that
-		# /W4 does not include for example, warnings that are off by default.
-		/Wall
+		# Display level 1, level 2, and level 3 warnings, and all
+		# level 4 (informational) warnings that are not turned off by default.
+		/W4
 		# Treat all compiler warnings as errors.
 		/WX
 	)
