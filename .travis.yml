@@ -78,15 +78,15 @@ matrix:
 #1      compiler: clang
 
     # Xcode 9.1.
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode9.1
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
+#1      os: osx
+#1      osx_image: xcode9.1
+#1      compiler: clang
 
-    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode9.1
-      compiler: clang
+#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
+#1      os: osx
+#1      osx_image: xcode9.1
+#1      compiler: clang
 
     #
     # GCC on Linux.
