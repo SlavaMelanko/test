@@ -157,7 +157,7 @@ install:
       mkdir cmake && travis_retry wget --no-check-certificate -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       sudo pip install conan
-      sudo pip install --upgrade --user git+git://github.com/eddyxu/cpp-coveralls.git
+      sudo pip install --user cpp-coveralls
     else
       brew update
       brew install cmake || brew upgrade cmake
@@ -176,4 +176,6 @@ script:
   - cmake --build . --config ${BUILD_TYPE}
   - ctest --extra-verbose --parallel 2
   - bash <(curl -s https://codecov.io/bash)
-  - coveralls --build-root build --gcov-options '\-lp'
+  
+after_success:
+  - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
