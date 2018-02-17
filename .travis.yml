@@ -187,4 +187,4 @@ after_success:
   - lcov --list coverage.info # debug info
   - bash <(curl -s https://codecov.io/bash)
   #- coveralls --build-root . --gcov-options '\-lp' -e external
-  - coveralls --root . -E ".*CMakeFiles.*"
+  - coveralls --root . --gcov-options '\-lp'
