@@ -120,7 +120,9 @@ matrix:
       os: linux
       addons: &gcc7
         apt:
-          packages: g++-7
+          packages:
+          - g++-7
+          - lcov
           sources: ubuntu-toolchain-r-test
 
     - env: CXX_COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Release
