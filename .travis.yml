@@ -186,5 +186,5 @@ after_success:
   - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
   - lcov --list coverage.info # debug info
   - bash <(curl -s https://codecov.io/bash)
-  #- coveralls --build-root . --gcov-options '\-lp' -e external
-  - coveralls --root . --gcov-options '\-lp'
+  - cd ..
+  - coveralls --build-root build --gcov-options '\-lp' -e build/external -e build/catch -e cmake
