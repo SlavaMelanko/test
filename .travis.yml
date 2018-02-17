@@ -135,6 +135,9 @@ matrix:
     - os: linux
       compiler: clang
 
+before_install:
+  - pip install --user cpp-coveralls
+
 install:
   # Set the ${CXX} variable properly.
   - export CXX=${CXX_COMPILER}
@@ -182,4 +185,5 @@ after_success:
   - lcov --directory . --capture --output-file coverage.info # capture coverage info
   - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
   - lcov --list coverage.info # debug info
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) 
+  - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
