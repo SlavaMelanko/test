@@ -5,3 +5,7 @@
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/SMelanko/smela?branch=master&svg=true)](https://ci.appveyor.com/project/SMelanko/smela)
 [![codecov](https://codecov.io/gh/SMelanko/smela/branch/master/graph/badge.svg)](https://codecov.io/gh/SMelanko/smela)
 [![Coverage Status](https://coveralls.io/repos/github/SMelanko/smela/badge.svg?branch=master)](https://coveralls.io/github/SMelanko/smela?branch=master)
+<a href="https://scan.coverity.com/projects/smelanko-smela">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/15162/badge.svg"/>
+</a>
