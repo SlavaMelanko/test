@@ -122,7 +122,6 @@ matrix:
         apt:
           packages:
           - g++-7
-          - lcov
           sources: ubuntu-toolchain-r-test
 
     - env: CXX_COMPILER=g++-7 CC_COMPILER=gcc-7 BUILD_TYPE=Release
@@ -182,9 +181,6 @@ script:
   - ctest --extra-verbose --parallel 2
   
 after_success:
-  - lcov --directory . --capture --output-file coverage.info # capture coverage info
-  - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
-  - lcov --list coverage.info # debug info
   - bash <(curl -s https://codecov.io/bash)
   - cd ..
   - coveralls --build-root build --gcov-options '\-lp' -e build/external -e build/catch -e cmake -E ".*CMakeFiles.*"
