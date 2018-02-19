@@ -135,9 +135,6 @@ matrix:
     - os: linux
       compiler: clang
 
-before_install:
-  - pip install --user cpp-coveralls
-
 install:
   # Set the ${CXX} variable properly.
   - export CXX=${CXX_COMPILER}
