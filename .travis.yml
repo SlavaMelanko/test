@@ -134,6 +134,9 @@ matrix:
     - os: linux
       compiler: clang
 
+before_install:
+  - pip install --user cpp-coveralls
+
 install:
   # Set the ${CXX} variable properly.
   - export CXX=${CXX_COMPILER}
@@ -158,7 +161,6 @@ install:
       mkdir cmake && travis_retry wget --no-check-certificate -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       sudo pip install conan
-      sudo pip install --user cpp-coveralls
     else
       brew update
       brew install cmake || brew upgrade cmake
