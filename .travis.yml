@@ -131,7 +131,7 @@ matrix:
     - os: linux
       env: *env6
         - BUILD_TYPE=Release
-      addons: *gcc7
+      addons: *gcc6
 
     # GCC 7.
     - os: linux
