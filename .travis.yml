@@ -117,7 +117,7 @@ matrix:
 
     # GCC 6.
     - os: linux
-      env: &env6
+      env:
         - CXX_COMPILER=g++-6
         - CC_COMPILER=gcc-6
         - BUILD_TYPE=Debug
@@ -127,11 +127,6 @@ matrix:
             - g++-6
           sources:
             - ubuntu-toolchain-r-test
-
-    - os: linux
-      env: *env6
-        - BUILD_TYPE=Release
-      addons: *gcc6
 
     # GCC 7.
     - os: linux
