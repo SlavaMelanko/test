@@ -6,147 +6,95 @@ dist: trusty
 matrix:
   include:
 
-    #
+    ###########################################################################
     # Clang on macOS.
     #
 
-    # Xcode 7.3.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode7.3
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode7.3
-#1      compiler: clang
-
-    # Xcode 8.0.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode8.0
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode8.0
-#1      compiler: clang
-
-    # Xcode 8.1.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode8.1
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode8.1
-#1      compiler: clang
-
-    # Xcode 8.2.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode8.2
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode8.2
-#1      compiler: clang
-
-    # Xcode 8.3.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode8.3
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode8.3
-#1      compiler: clang
-
-    # Xcode 9.0.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode9.0
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode9.0
-#1      compiler: clang
-
-    # Xcode 9.1.
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Debug
-#1      os: osx
-#1      osx_image: xcode9.1
-#1      compiler: clang
-
-#1    - env: CXX_COMPILER=clang++ BUILD_TYPE=Release
-#1      os: osx
-#1      osx_image: xcode9.1
-#1      compiler: clang
-
     #
+    # Xcode 9.0 Debug with tests.
+    #
+    - os: osx
+      env:
+        - CXX_COMPILER=clang++
+        - BUILD_TYPE=Debug
+      osx_image: xcode9.0
+      compiler: clang
+      script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir -p build && cd build
+        - conan install .. --build missing -s build_type=${BUILD_TYPE}
+        - cmake .. -DCMAKE_BUILD_TYPE:STRING=${BUILD_TYPE}
+        - cmake --build . --config ${BUILD_TYPE}
+      after_success:
+        - ctest --extra-verbose --parallel 2
+
+    ###########################################################################
     # GCC on Linux.
     #
 
-    # GCC 5.
-#1    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Debug
-#1      os: linux
-#1      addons: &gcc5
-#1        apt:
-#1          packages: g++-5
-#1          sources: ubuntu-toolchain-r-test
-
-#1    - env: CXX_COMPILER=g++-5 CC_COMPILER=gcc-5 BUILD_TYPE=Release
-#1      os: linux
-#1      addons: *gcc5
-
-    # GCC 6.
-#1    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Debug
-#1      os: linux
-#1      addons: &gcc6
-#1        apt:
-#1          packages: g++-6
-#1          sources: ubuntu-toolchain-r-test
-
-#1    - env: CXX_COMPILER=g++-6 CC_COMPILER=gcc-6 BUILD_TYPE=Release
-#1      os: linux
-#1      addons: *gcc6
-
-    # GCC 6.
+    #
+    # GCC 7 Debug with Codecov and Coveralls.
+    #
     - os: linux
       env:
-        - CXX_COMPILER=g++-6
-        - CC_COMPILER=gcc-6
-        - BUILD_TYPE=Debug
-      addons: &gcc6
-        apt:
-          packages:
-            - g++-6
-          sources:
-            - ubuntu-toolchain-r-test
-
-    # GCC 7.
-    - os: linux
-      env:
-        - CXX_COMPILER=g++-7
         - CC_COMPILER=gcc-7
-        - BUILD_TYPE=Debug
-      addons: &gcc7
-        apt:
-          packages:
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      env:
         - CXX_COMPILER=g++-7
-        - CC_COMPILER=gcc-7
-        - BUILD_TYPE=Release
+        - BUILD_TYPE=Debug
+        - ENABLE_TESTING=TRUE
+        - ENABLE_COVERAGE=TRUE
       addons: *gcc7
+      before_install:
+        - pip install --user cpp-coveralls
+      script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir -p build && cd build
+        - |
+          conan install .. --build missing \
+            -s build_type=${BUILD_TYPE} \
+            -s compiler.libcxx=libstdc++11
+        - |
+          cmake .. \
+            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
+            -DENABLE_TESTING:BOOL=${ENABLE_TESTING} \
+            -DENABLE_COVERAGE:BOOL=${ENABLE_COVERAGE}
+        - cmake --build . --config ${BUILD_TYPE}
+      after_success:
+        - ctest --extra-verbose --parallel 2
+        - |
+          # Codecov - upload the report.
+          bash <(curl -s https://codecov.io/bash)
+          # Coveralls - upload the report.
+          cd ..
+          coveralls --build-root build --gcov-options '\-lp' \
+            -e build/external \
+            -e build/catch \
+            -e cmake \
+            -E ".*CMakeFiles.*"
+
+    #
+    # GCC 7 Debug with Cppcheck.
+    #
+    - os: linux
+      env:
+        - CC_COMPILER=gcc-7
+        - CXX_COMPILER=g++-7
+        - BUILD_TYPE=Debug
+        - ENABLE_CPPCHECK=TRUE
+      addons: *gcc7
+      script:
+        - cd "${TRAVIS_BUILD_DIR}"
+        - mkdir -p build && cd build
+        - |
+          conan install .. --build missing \
+            -s build_type=${BUILD_TYPE} \
+            -s compiler.libcxx=libstdc++11
+        - |
+          cmake .. \
+            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
+            -DENABLE_CPPCHECK:BOOL=${ENABLE_CPPCHECK}
+        - cmake --build . --config ${BUILD_TYPE}
+      after_success:
+        - make check
 
   exclude:
     - os: osx
@@ -154,30 +102,28 @@ matrix:
     - os: linux
       compiler: clang
 
-before_install:
-  - pip install --user cpp-coveralls
-
 install:
-  # Set the ${CXX} variable properly.
-  - export CXX=${CXX_COMPILER}
-  - ${CXX} --version
-  # Set the ${CC} variable properly.
+  # Set up the environment.
   - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
+      # Set the ${CC} variable properly.
       export CC=${CC_COMPILER}
       ${CC} --version
     fi
 
+  # Set the ${CXX} variable properly.
+  - export CXX=${CXX_COMPILER}
+  - ${CXX} --version
+
   # Dependencies required by the CI are installed in ${TRAVIS_BUILD_DIR}/deps/.
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir -p "${DEPS_DIR}"
-  - cd "${DEPS_DIR}"
-
+  - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
   # Install a recent CMake (unless already installed on macOS) and Conan.
   - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      CMAKE_VERSION=3.9.5
-      CMAKE_URL="https://cmake.org/files/v${CMAKE_VERSION%.[0-9]}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
+    if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
+      CMAKE_VERSION=3.10.0
+      CMAKE_ARCH=cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz
+      CMAKE_URL="https://cmake.org/files/v${CMAKE_VERSION%.[0-9]}/${CMAKE_ARCH}"
       mkdir cmake && travis_retry wget --no-check-certificate -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       sudo pip install conan
@@ -186,19 +132,3 @@ install:
       brew install cmake || brew upgrade cmake
       brew install conan || brew upgrade conan
     fi
-
-before_script:
-  - conan --version
-  - cmake --version
-  - cd "${TRAVIS_BUILD_DIR}" && mkdir -p build && cd build
-  - conan install .. --build missing -s build_type=${BUILD_TYPE}
-  - cmake .. -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} -DENABLE_COVERAGE:BOOL=TRUE
-
-script:
-  - cmake --build . --config ${BUILD_TYPE}
-  - ctest --extra-verbose --parallel 2
-  
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-  - cd ..
-  - coveralls --build-root build --gcov-options '\-lp' -e build/external -e build/catch -e cmake -E ".*CMakeFiles.*"
