@@ -3,6 +3,12 @@ language: cpp
 sudo: required
 dist: trusty
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "WtCESGRHfDMwbgGxm0G68QY69bn5FbEpME6lvkKcHu6dZXDx9TqigI7mH5R92iUc1oTL3tpMd0hnZksoujcbCd68V1uaEkE4/kmkHZMwixE9G2OZQZlkO0QoFAyuK0FjyJFdq2PBoBlPocBBjIqcp5PZ8ShSEl7yxcV7lBuUzBZ73caBuWwoczbNFgaJ17155outORCuuSIS/74/yyOa72y+IQDRKH1J2qN49zOChpYgKgiGLkio3776ychJAy3wjgjO3Ae6QXxhhWbSMalgVUzq7fknX5Wa7ZjFVy7mmgCZxc09tCtykGXFMrXRz1dkJYmFrm+IMVYWQaTby6Z9iZ5qnKKo2Edzqlw5vjulFZIA6PMf0EzYRDIQgIzNIIOo4sBMAz2kwpnOilK7lRwUJjdLZjdPxAu2my4jk3fwSqk912hvOrweZm6bDgzKInjo8EFgXFm+LDpveUdjQGRt+Ib3AHF76cbKHC6T+cq07ZdWHingLwDK31mQrlzdPJ3qt2fvvycLuBi+jPEQ4kZqpzQbAl7WjkIQCib+6eioBfUWeIuopGF26QxeqI+eI7jWtXpIxs57Ag2alY1YqPbDJiQG7Ipj514QL9Gwa+yC6HiJPGi033LqIXzXNcCH4BKjr/czDASEozGgkiEG7RBaTYKVtVey9cJ+xOP6L19W2EU="
+
 matrix:
   include:
 
@@ -122,6 +128,45 @@ matrix:
         - cmake --build . --config ${BUILD_TYPE}
       after_success:
         - make check
+
+    #
+    # Coverity Scan
+    #
+    - os: linux
+      env:
+        - CC_COMPILER=gcc-7
+        - CXX_COMPILER=g++-7
+        - BUILD_TYPE=Debug
+      before_install:
+        - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      addons:
+        apt:
+          packages:
+            - gcc-7
+            - g++-7
+          sources:
+            - ubuntu-toolchain-r-test
+        coverity_scan:
+          project:
+            name: "SMelanko/smela"
+            description: "A simple example of how to setup a complete CI environment for C and C++"
+          notification_email: slava.melanko@gmail.com
+          build_command_prepend:
+            - cd "${TRAVIS_BUILD_DIR}"
+            - mkdir -p build && cd build
+            - |
+              conan install .. --build missing \
+              -s build_type=${BUILD_TYPE} \
+              -s compiler.libcxx=libstdc++11
+            - |
+              cmake .. \
+                -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
+                -DENABLE_CPPCHECK:BOOL=${ENABLE_CPPCHECK}
+          build_command: cmake --build . --config ${BUILD_TYPE}
+          branch_pattern: master
+      script:
+        - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
 
   exclude:
     - os: osx
