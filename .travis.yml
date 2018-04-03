@@ -156,17 +156,13 @@ matrix:
             - mkdir -p build && cd build
             - |
               conan install .. --build missing \
-              -s build_type=${BUILD_TYPE} \
-              -s compiler.libcxx=libstdc++11
+                -s build_type=${BUILD_TYPE} \
+                -s compiler.libcxx=libstdc++11
             - |
               cmake .. \
-                -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
-                -DENABLE_CPPCHECK:BOOL=${ENABLE_CPPCHECK}
+                -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE}
           build_command: cmake --build . --config ${BUILD_TYPE}
           branch_pattern: master
-      script:
-        - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-
 
   exclude:
     - os: osx
