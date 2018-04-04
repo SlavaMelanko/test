@@ -28,3 +28,7 @@ add_subdirectory(modules/smela)
 
 enable_testing()
 add_subdirectory(tests)
+
+if (ENABLE_CLANG_TIDY)
+	include(ClangTydi)
+endif ()
