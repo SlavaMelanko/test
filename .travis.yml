@@ -19,20 +19,20 @@ matrix:
     #
     # Xcode 9.0 Debug with tests.
     #
-    - os: osx
-      env:
-        - CXX_COMPILER=clang++
-        - BUILD_TYPE=Debug
-      osx_image: xcode9.0
-      compiler: clang
-      script:
-        - cd "${TRAVIS_BUILD_DIR}"
-        - mkdir -p build && cd build
-        - conan install .. --build missing -s build_type=${BUILD_TYPE}
-        - cmake .. -DCMAKE_BUILD_TYPE:STRING=${BUILD_TYPE}
-        - cmake --build . --config ${BUILD_TYPE}
-      after_success:
-        - ctest --extra-verbose --parallel 2
+#    - os: osx
+#      env:
+#        - CXX_COMPILER=clang++
+#        - BUILD_TYPE=Debug
+#      osx_image: xcode9.0
+#      compiler: clang
+#      script:
+#        - cd "${TRAVIS_BUILD_DIR}"
+#        - mkdir -p build && cd build
+#        - conan install .. --build missing -s build_type=${BUILD_TYPE}
+#        - cmake .. -DCMAKE_BUILD_TYPE:STRING=${BUILD_TYPE}
+#        - cmake --build . --config ${BUILD_TYPE}
+#      after_success:
+#        - ctest --extra-verbose --parallel 2
 
     #
     # Xcode 9.0 Debug with Clang-Tidy.
@@ -62,72 +62,72 @@ matrix:
     #
     # GCC 7 Debug with Codecov and Coveralls.
     #
-    - os: linux
-      env:
-        - CC_COMPILER=gcc-7
-        - CXX_COMPILER=g++-7
-        - BUILD_TYPE=Debug
-        - ENABLE_TESTING=TRUE
-        - ENABLE_COVERAGE=TRUE
-      addons: &gcc7
-        apt:
-          packages:
-            - gcc-7
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-      before_install:
-        - pip install --user cpp-coveralls
-      script:
-        - cd "${TRAVIS_BUILD_DIR}"
-        - mkdir -p build && cd build
-        - |
-          conan install .. --build missing \
-            -s build_type=${BUILD_TYPE} \
-            -s compiler.libcxx=libstdc++11
-        - |
-          cmake .. \
-            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
-            -DENABLE_TESTING:BOOL=${ENABLE_TESTING} \
-            -DENABLE_COVERAGE:BOOL=${ENABLE_COVERAGE}
-        - cmake --build . --config ${BUILD_TYPE}
-      after_success:
-        - ctest --extra-verbose --parallel 2
-        - |
-          # Codecov - upload the report.
-          bash <(curl -s https://codecov.io/bash)
-          # Coveralls - upload the report.
-          cd ..
-          coveralls --build-root build --gcov-options '\-lp' \
-            -e build/external \
-            -e build/catch \
-            -e cmake \
-            -E ".*CMakeFiles.*"
+#    - os: linux
+#      env:
+#        - CC_COMPILER=gcc-7
+#        - CXX_COMPILER=g++-7
+#        - BUILD_TYPE=Debug
+#        - ENABLE_TESTING=TRUE
+#        - ENABLE_COVERAGE=TRUE
+#      addons: &gcc7
+#        apt:
+#          packages:
+#            - gcc-7
+#            - g++-7
+#          sources:
+#            - ubuntu-toolchain-r-test
+#      before_install:
+#        - pip install --user cpp-coveralls
+#      script:
+#        - cd "${TRAVIS_BUILD_DIR}"
+#        - mkdir -p build && cd build
+#        - |
+#          conan install .. --build missing \
+#            -s build_type=${BUILD_TYPE} \
+#            -s compiler.libcxx=libstdc++11
+#        - |
+#          cmake .. \
+#            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
+#            -DENABLE_TESTING:BOOL=${ENABLE_TESTING} \
+#            -DENABLE_COVERAGE:BOOL=${ENABLE_COVERAGE}
+#        - cmake --build . --config ${BUILD_TYPE}
+#      after_success:
+#        - ctest --extra-verbose --parallel 2
+#        - |
+#          # Codecov - upload the report.
+#          bash <(curl -s https://codecov.io/bash)
+#          # Coveralls - upload the report.
+#          cd ..
+#          coveralls --build-root build --gcov-options '\-lp' \
+#            -e build/external \
+#            -e build/catch \
+#            -e cmake \
+#            -E ".*CMakeFiles.*"
 
     #
     # GCC 7 Debug with Cppcheck.
     #
-    - os: linux
-      env:
-        - CC_COMPILER=gcc-7
-        - CXX_COMPILER=g++-7
-        - BUILD_TYPE=Debug
-        - ENABLE_CPPCHECK=TRUE
-      addons: *gcc7
-      script:
-        - cd "${TRAVIS_BUILD_DIR}"
-        - mkdir -p build && cd build
-        - |
-          conan install .. --build missing \
-            -s build_type=${BUILD_TYPE} \
-            -s compiler.libcxx=libstdc++11
-        - |
-          cmake .. \
-            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
-            -DENABLE_CPPCHECK:BOOL=${ENABLE_CPPCHECK}
-        - cmake --build . --config ${BUILD_TYPE}
-      after_success:
-        - make check
+#    - os: linux
+#      env:
+#        - CC_COMPILER=gcc-7
+#        - CXX_COMPILER=g++-7
+#        - BUILD_TYPE=Debug
+#        - ENABLE_CPPCHECK=TRUE
+#      addons: *gcc7
+#      script:
+#        - cd "${TRAVIS_BUILD_DIR}"
+#        - mkdir -p build && cd build
+#        - |
+#          conan install .. --build missing \
+#            -s build_type=${BUILD_TYPE} \
+#            -s compiler.libcxx=libstdc++11
+#        - |
+#          cmake .. \
+#            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
+#            -DENABLE_CPPCHECK:BOOL=${ENABLE_CPPCHECK}
+#        - cmake --build . --config ${BUILD_TYPE}
+#      after_success:
+#        - make check
 
     #
     # Coverity Scan
@@ -137,8 +137,6 @@ matrix:
         - CC_COMPILER=gcc-7
         - CXX_COMPILER=g++-7
         - BUILD_TYPE=Debug
-      before_install:
-        - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
       addons:
         apt:
           packages:
@@ -154,15 +152,12 @@ matrix:
           build_command_prepend:
             - cd "${TRAVIS_BUILD_DIR}"
             - mkdir -p build && cd build
-            - |
-              conan install .. --build missing \
-                -s build_type=${BUILD_TYPE} \
-                -s compiler.libcxx=libstdc++11
-            - |
-              cmake .. \
-                -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE}
+            - conan install .. --build missing -s build_type=${BUILD_TYPE} -s compiler.libcxx=libstdc++11
+            - cmake .. -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE}
           build_command: cmake --build . --config ${BUILD_TYPE}
           branch_pattern: master
+      script:
+        - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
   exclude:
     - os: osx
