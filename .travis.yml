@@ -200,12 +200,10 @@ install:
     if [ "${TRAVIS_OS_NAME}" == "linux" ]; then
       # Set the ${CC} variable properly.
       export CC=${CC_COMPILER}
-      ${CC} --version
     fi
 
   # Set the ${CXX} variable properly.
   - export CXX=${CXX_COMPILER}
-  - ${CXX} --version
 
   # Dependencies required by the CI are installed in ${TRAVIS_BUILD_DIR}/deps/.
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
