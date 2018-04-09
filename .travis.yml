@@ -12,21 +12,6 @@ env:
 matrix:
   include:
 
-    #
-    # Git Check
-    #
-    - os: linux
-      env:
-        - TEST="Git Check"
-      script:
-        - |
-          if [[ -n $(git diff --check HEAD^) ]]; then
-            echo "You must remove whitespace before submitting a pull request"
-            echo ""
-            git diff --check HEAD^
-            exit -1
-          fi
-
     ###########################################################################
     # Clang on macOS.
     #
@@ -48,41 +33,6 @@ matrix:
 #        - cmake --build . --config ${BUILD_TYPE}
 #      after_success:
 #        - ctest --extra-verbose --parallel 2
-
-    #
-    # GCC 7 Debug with Clang-Tidy.
-    #
-    - os: linux
-      env:
-        - CC_COMPILER=gcc-7
-        - CXX_COMPILER=g++-7
-        - BUILD_TYPE=Debug
-        - ENABLE_CLANG_TIDY=TRUE
-      addons:
-        apt:
-          packages:
-            - gcc-7
-            - g++-7
-            - clang-4.0
-            - clang-tidy-4.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
-      script:
-        - cd "${TRAVIS_BUILD_DIR}"
-        - mkdir -p build && cd build
-        - |
-          conan install .. --build missing \
-            -s build_type=${BUILD_TYPE} \
-            -s compiler.libcxx=libstdc++11
-        - |
-          cmake .. \
-            -DCMAKE_BUILD_TYPE:STRING=${BUILD_MODE} \
-            -DENABLE_CLANG_TIDY:BOOL=${ENABLE_CLANG_TIDY} \
-            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-        - cmake --build . --config ${BUILD_TYPE}
-      after_success:
-        - make tidy
 
     ###########################################################################
     # GCC on Linux.
