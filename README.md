@@ -11,7 +11,7 @@
 </a>
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39b19b9586324a1a98f5151d5dcef214)](https://www.codacy.com/app/SMelanko/smela?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SMelanko/smela&amp;utm_campaign=Badge_Grade)
 
-## smela icon test
+# smela icon test
 
 <p align="center">
   <img width="156" height="156" src="logo.png">
