@@ -15,6 +15,10 @@
   <img width="156" height="156" src="logo.png">
 </p>
 
+<p align="center">
+  <img width="156" height="156" src="logo-2.png">
+</p>
+
 img: color (#C59B16)
 
 txt: color (#1640C5), Baloo Tamma
