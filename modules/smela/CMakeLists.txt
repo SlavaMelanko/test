@@ -8,9 +8,10 @@ configure_file(include/smela/Version.h.in Version.h @ONLY)
 file(GLOB_RECURSE HEADERS "include/*.h")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
+#${CMAKE_CURRENT_BINARY_DIR}/Version.h
+#${HEADERS}
+
 add_library(${PROJECT_NAME}
-	${CMAKE_CURRENT_BINARY_DIR}/Version.h
-	${HEADERS}
 	${SOURCES}
 )
 
