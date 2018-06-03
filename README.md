@@ -10,6 +10,7 @@
        src="https://scan.coverity.com/projects/15162/badge.svg"/>
 </a>
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39b19b9586324a1a98f5151d5dcef214)](https://www.codacy.com/app/SMelanko/smela?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SMelanko/smela&amp;utm_campaign=Badge_Grade)
+[![CodeFactor](https://www.codefactor.io/repository/github/smelanko/smela/badge)](https://www.codefactor.io/repository/github/smelanko/smela)
 <img align="right" alt="pipecat" width="150"
 src="logo-2.png" />
 
