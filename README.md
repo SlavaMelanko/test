@@ -1,8 +1,8 @@
 # test
 
-[![GitHub version](https://badge.fury.io/gh/SMelanko%test.svg)](https://badge.fury.io/gh/SMelanko%2Ftest)
+[![GitHub version](https://badge.fury.io/gh/SMelanko%2Ftest.svg)](https://badge.fury.io/gh/SMelanko%2Ftest)
 [![Build Status: Linux, OSX](https://travis-ci.org/SMelanko/smela.svg?branch=master)](https://travis-ci.org/SMelanko/smela)
-[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/SMelanko/smela?branch=master&svg=true)](https://ci.appveyor.com/project/SMelanko/smela)
+[![Build status](https://ci.appveyor.com/api/projects/status/n8q8i1ey5ococcnf/branch/master?svg=true)](https://ci.appveyor.com/project/SMelanko/smela/branch/master)
 [![codecov](https://codecov.io/gh/SMelanko/smela/branch/master/graph/badge.svg)](https://codecov.io/gh/SMelanko/smela)
 [![Coverage Status](https://coveralls.io/repos/github/SMelanko/smela/badge.svg?branch=master)](https://coveralls.io/github/SMelanko/smela?branch=master)
 <a href="https://scan.coverity.com/projects/smelanko-smela">
